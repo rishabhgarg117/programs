@@ -1,52 +1,64 @@
-# Prerequisites
-*.d
+#include <stdio.h>
+#include <math.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+// Function to perform Jump Search
+void jumpSearch(int arr[], int n, int key) {
+    int step = sqrt(n); // Define the step size
+    int prev = 0;
+    int comparisons = 1;
 
-# Linker output
-*.ilk
-*.map
-*.exp
+    // Finding the block where the element is present (if present)
+    while (arr[fmin(step, n) - 1] < key) {
+        prev = step;
+        step += sqrt(n);
+        comparisons++;
+        if (prev >= n) {
+            printf("Not Present\n");
+            printf("Comparisons: %d\n", comparisons);
+            return;
+        }
+    }
 
-# Precompiled Headers
-*.gch
-*.pch
+    // Performing linear search in the identified block
+    while (arr[prev] < key) {
+        prev++;
+        comparisons++;
+        if (prev == fmin(step, n)) {
+            printf("Not Present\n");
+            printf("Comparisons: %d\n", comparisons);
+            return;
+        }
+    }
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+    // If key is found
+    if (arr[prev] == key) {
+        printf("Present\n");
+        printf("Comparisons: %d\n", comparisons);
+    } else {
+        printf("Not Present\n");
+        printf("Comparisons: %d\n", comparisons);
+    }
+}
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+int main() {
+    int T;
+    scanf("%d", &T); // Input number of test cases
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+    for(int j=0; j<T; j++) 
+    {
+        int n;
+        scanf("%d", &n); // Input size of array
+        int arr[n];
+        for (int i = 0; i < n; ++i) {
+            scanf("%d", &arr[i]); // Input array elements
+        }
+        int key;
+        scanf("%d", &key); // Input key element
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+        // Perform Jump Search and print the result
+        jumpSearch(arr, n, key);
+    }
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+    return 0;
+}
+
